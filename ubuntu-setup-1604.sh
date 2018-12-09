@@ -15,17 +15,17 @@ printf -- "#########################################\n\n"
 # directly (not recommend), use 'sudo -i' to become root when needed.             #
 ###################################################################################
 
-export SCRIPT_USERNAME='frk'
+export SCRIPT_USERNAME='reactiion'
 export SCRIPT_SSH_KEY=''
 
-export VERSION_GIT=2.14.2
-export VERSION_TMUX=2.6
-export VERSION_VIM=8.0.1155
-export VERSION_ZSH=5.4.2
+export VERSION_GIT=2.19.2
+export VERSION_TMUX=2.8
+export VERSION_VIM=8.1.0549
+export VERSION_ZSH=5.6.2
 export VERSION_FASD=1.0.1
-export VERSION_LIBRESSL=2.6.2
-export VERSION_CMAKE=3.9.3
-export VERSION_CURL=7.55.1
+export VERSION_LIBRESSL=2.2.2
+export VERSION_CMAKE=3.13.0
+export VERSION_CURL=7.62.0
 
 printf -- "- Adding user '$SCRIPT_USERNAME'...\n\n"
 adduser --quiet --gecos "" $SCRIPT_USERNAME
@@ -40,8 +40,8 @@ printf -- "- Adding user '$SCRIPT_USERNAME'...ok\n"
 
 exec 3>&1
 exec 4>&2
-exec 1>/dev/null
-exec 2>/dev/null
+#exec 1>/dev/null
+#exec 2>/dev/null
 
 gpasswd -a $SCRIPT_USERNAME sudo
 gpasswd -a $SCRIPT_USERNAME www-data
@@ -55,8 +55,8 @@ Dpkg::Options {
 EOF
 
 export DEBIAN_FRONTEND=noninteractive
-apt-get -yqq update
-apt-get -yqq install software-properties-common language-pack-en-base
+apt-get -y update
+apt-get -y install software-properties-common language-pack-en-base
 
 timedatectl set-timezone Europe/Berlin
 export LC_ALL='en_US.UTF-8'
@@ -66,70 +66,66 @@ update-locale LC_ALL="en_GB.UTF-8" LANG="en_GB.UTF-8"
 add-apt-repository -y ppa:jonathonf/gcc
 add-apt-repository -y ppa:ondrej/php
 
-apt-get -yqq update
-apt-get -yqq upgrade
-apt-get -yqq dist-upgrade
-apt-get -yqq autoremove
-apt-get -yqq install autoconf                   \
-                     automake                   \
-                     build-essential            \
-                     checkinstall               \
-                     clang                      \
-                     curl                       \
-                     dbus                       \
-                     g++                        \
-                     g++-7                      \
-                     gcc                        \
-                     gcc-7                      \
-                     gettext                    \
-                     git                        \
-                     htop                       \
-                     iftop                      \
-                     jq                         \
-                     landscape-common           \
-                     libcrypto++-dev            \
-                     libcurl4-openssl-dev       \
-                     libevent-dev               \
-                     libiw-dev                  \
-                     libnghttp2-dev             \
-                     libprotobuf-dev            \
-                     libsqlite3-dev             \
-                     libssl-dev                 \
-                     libtool                    \
-                     libz-dev                   \
-                     libgd-dev                  \
-                     libgeoip-dev               \
-                     m4                         \
-                     man                        \
-                     mosh                       \
-                     musl-tools                 \
-                     ncurses-dev                \
-                     ncurses-term               \
-                     netcat                     \
-                     ntp                        \
-                     ufw                        \
-                     pax                        \
-                     pkg-config                 \
-                     python                     \
-                     python-dev                 \
-                     python-pip                 \
-                     python-software-properties \
-                     python3                    \
-                     python3-dev                \
-                     python3-pip                \
-                     software-properties-common \
-                     sudo                       \
-                     tree                       \
-                     vim                        \
-                     wget                       \
-                     zsh
+apt-get -y update
+apt-get -y upgrade
+apt-get -y dist-upgrade
+apt-get -y autoremove
+apt-get -y install autoconf                   \
+                   automake                   \
+                   build-essential            \
+                   checkinstall               \
+                   clang                      \
+                   curl                       \
+                   dbus                       \
+                   g++                        \
+                   g++-7                      \
+                   gcc                        \
+                   gcc-7                      \
+                   gettext                    \
+                   git                        \
+                   htop                       \
+                   iftop                      \
+                   jq                         \
+                   landscape-common           \
+                   libcrypto++-dev            \
+                   libcurl4-openssl-dev       \
+                   libevent-dev               \
+                   libiw-dev                  \
+                   libnghttp2-dev             \
+                   libprotobuf-dev            \
+                   libsqlite3-dev             \
+                   libssl-dev                 \
+                   libtool                    \
+                   libz-dev                   \
+                   libgd-dev                  \
+                   libgeoip-dev               \
+                   m4                         \
+                   man                        \
+                   mosh                       \
+                   musl-tools                 \
+                   ncurses-dev                \
+                   ncurses-term               \
+                   netcat                     \
+                   ntp                        \
+                   ufw                        \
+                   pax                        \
+                   pkg-config                 \
+                   python                     \
+                   python-dev                 \
+                   python-pip                 \
+                   python-software-properties \
+                   python3                    \
+                   python3-dev                \
+                   python3-pip                \
+                   software-properties-common \
+                   sudo                       \
+                   tree                       \
+                   vim                        \
+                   wget                       \
+                   zsh
 
 update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 100 \
                     --slave   /usr/bin/g++ g++ /usr/bin/g++-7
-
-pip install --upgrade pip setuptools
-pip3 install --upgrade pip setuptools
-pip3 install --upgrade asciinema httpie glances python-swiftclient python-keystoneclient
 
 printf -- "ok\n" >&3
 printf -- "- Building essentials using toast..." >&3
@@ -171,7 +167,7 @@ toast arm fasd/$VERSION_FASD:         $(genlink clvv fasd $VERSION_FASD)
 wget https://raw.githubusercontent.com/frk1/mirrors/master/rg -O /usr/local/bin/rg
 chmod +x /usr/local/bin/rg
 
-wget https://cmake.org/files/v3.9/cmake-$VERSION_CMAKE-Linux-x86_64.tar.gz  -O /tmp/cmake.tar.gz
+wget https://cmake.org/files/v3.13/cmake-$VERSION_CMAKE-Linux-x86_64.tar.gz  -O /tmp/cmake.tar.gz
 tar --strip-components 1 -xzvf /tmp/cmake.tar.gz -C /usr/local
 curl -sSL http://git.io/git-extras-setup | bash
 
@@ -292,7 +288,7 @@ printf -- "- Building nginx..." >&3
 mkdir -p /tmp/build-nginx
 cd /tmp/build-nginx
 
-export NGINX_VERSION=1.13.5
+export NGINX_VERSION=1.15.7
 export VERSION_ZLIB=zlib-1.2.11
 export VERSION_PCRE=pcre-8.41
 export VERSION_LIBRESSL=libressl-$VERSION_LIBRESSL
@@ -617,6 +613,7 @@ sed -i "s/upload_max_filesize = 2M/upload_max_filesize = 100M/g" /etc/php/7.2/fp
 systemctl restart php7.2-fpm
 
 printf -- "ok\n" >&3
+
 rm /etc/apt/apt.conf.d/local
 
 chown -R www-data /var/www
@@ -624,5 +621,11 @@ chgrp -R www-data /var/www
 chmod -R g+w /var/www
 find /var/www -type d -exec chmod 2775 {} \;
 find /var/www -type f -exec chmod ug+rw {} \;
+
+printf -- "- Installing pip, pip3, and python tools..." >&3
+pip install --upgrade pip setuptools
+pip3 install --upgrade pip setuptools
+pip3 install --upgrade asciinema httpie glances python-swiftclient python-keystoneclient
+printf -- "ok\n" >&3
 
 printf -- "=> Done!\n\n" >&3
